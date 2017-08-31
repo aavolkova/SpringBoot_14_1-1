@@ -11,7 +11,6 @@ public class Director {
 //    @Size(min=1, max=50, message = "Must enter name.")
 
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -22,12 +21,32 @@ public class Director {
     public Set<Movie> movies;
 
 
-    // constructor (we can also do it in the controller)
+
+    // ====== Constructor (we can also do it in the controller)
     public Director(){
         setMovies(new HashSet<>());
     }
 
-    // Setters and Getters:
+
+
+    // ======= Custom methods: ========
+    // 1) ====== Delete movie from set
+    public void removeMovie(Movie movie) {
+        movies.remove(movie);
+    }
+
+    // 2) ====== Add a Movie: =========
+    public void addMovie(Movie m){
+        m.setDirector(this);  //set director with this object (set director not by id)
+        movies.add(m);
+    }
+    // ================================
+
+
+
+
+
+    // ====== Setters and Getters: ======
     public long getId() {
         return id;
     }
@@ -59,13 +78,5 @@ public class Director {
     public void setMovies(Set<Movie> movies) {
         this.movies = movies;
     }
-
-
-    // Add a method:
-    public void addMovie(Movie m){
-        m.setDirector(this);  //set director with this object (set director not by id)
-        movies.add(m);
-    }
-
 
 }

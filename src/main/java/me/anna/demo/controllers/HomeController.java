@@ -46,7 +46,7 @@ public class HomeController {
     public String index(Model model){
 
         // First let's create a derector
-        Director director = new Director();
+        /*Director director = new Director();
         director.setName("Stephen Bullock");
         director.setGenre("Sci Fi");
 
@@ -103,13 +103,13 @@ public class HomeController {
 //
 //        nd.setMovies(mList);
 //        directorRepo.save(nd);
-
+*/
         model.addAttribute("directors", directorRepo.findAll());
         return "index";
     }
 
 
-
+    //================== DIRECTOR =====================
     //============ Input form: Director ===============
     // Add new Director
     @GetMapping("/directorForm")
@@ -129,13 +129,11 @@ public class HomeController {
 
         directorRepo.save(director);
         return "resultDirector";
-
     }
 
 
 
-    //============ List All Directors ===============
-    //See all directors
+    //============ List ALL Directors ===============
     @GetMapping("/listAllDirectors")
     public String showAllDirectors(Model model) {
 
@@ -148,7 +146,7 @@ public class HomeController {
 
 
 
-    //============ Update Director Info ===============
+    //============ UPDATE Director Info ===============
     @GetMapping("/updateDirector/{id}")
     public String updateDirector(@PathVariable("id") long id, Model model)
     {
@@ -157,8 +155,18 @@ public class HomeController {
         return "directorForm";
     }
 
+    //============ DELETE Director Info ===============
+    @RequestMapping("/deleteDirector/{id}")
+    public String deleteDirector(@PathVariable("id") long id){
+        directorRepo.delete(id);
+        return "redirect:/listAllDirectors";
+    }
 
 
+
+
+
+    //================== MOVIE =====================
     //============ Input form: Movie ===============
     // Add new Movie
     @GetMapping("/movieForm/{id}")
@@ -185,19 +193,17 @@ public class HomeController {
 //        String directorName = movie.getDirector().getName();
 //        model.addAttribute("directorname", directorName);
 
-
         long dirId = movie.getDirector().getId();
         Director d = directorRepo.findOne(dirId);
         model.addAttribute("directorname", d.getName());
         System.out.println(d.getName());
 
         return "resultMovie";
-
     }
 
 
 
-    //============ List All Movies ===============
+    //============ List ALL Movies ===============
     @GetMapping("/listAllMovies")
     public String showAllMovies(Model model) {
 
@@ -219,8 +225,28 @@ public class HomeController {
     }
 
 
-    //============ Director Details & his/her movies ===============
-//    When you click on the name of the director you can see details of the director and the movies he/she directed
+
+    //============ DELETE Movie ===============
+    @RequestMapping("/deleteMovie/{id}")
+    public String deleteMovie(@PathVariable("id") long id){
+
+        Movie onemovie = movieRepo.findOne(id);
+
+        // you MUST first remove the Movie from the Set of movies for their director, then you can delete the movie
+        movieRepo.findOne(id).getDirector().removeMovie(movieRepo.findOne(id));
+        movieRepo.delete(id);
+
+        return "redirect:/listAllMovies";
+
+
+
+    }
+
+
+
+    //============ DIRECTOR DETAILS & his/her movies ===============
+    //    When you click on the name of the director you can see
+    //    details of the director and the movies he/she directed
     @GetMapping("/directorDetails/{id}")
     public String showDirectorDetails(@PathVariable("id") long id, Model model) {
 
@@ -229,8 +255,9 @@ public class HomeController {
     }
 
 
-    //============ Movie Details & its Director ===============
-//    When you click on the name of the movie, you can see details of the movie, as well as who directed it.
+    //============ MOVIE DETAILS & its Director ===============
+    //    When you click on the name of the movie, you can see
+    //    details of the movie, as well as who directed it.
     @GetMapping("/movieDetails/{id}")
     public String showMovieDetails(@PathVariable("id") long id, Model model) {
 
@@ -241,5 +268,8 @@ public class HomeController {
 
         return "movieDetails";
     }
+
+
+
 
 }

@@ -7,24 +7,15 @@
 </head>
 <body>
 
-<!--<div th:each="director : ${directors}">-->
-    <!--<h2 th:text="${director.name}"></h2>-->
-    <!--<h6 th:inline="text">specializing in [[${director.genre}]]</h6>-->
-    <!--<ul>-->
-        <!--<th:block th:each="movie : ${director.movies}">-->
-            <!--<li th:inline="text"><b>[[${movie.title}]]</b> released in [[${movie.year}]].</li>-->
-        <!--</th:block>-->
-    <!--</ul>-->
-<!--</div>-->
-<h2>List of All Directors</h2>
+<h2>List of All Directors:</h2>
 <br>
-
 
 <table border="1" cellpadding="5">
     <tr>
         <td><b>Director ID</p></b></td>
         <td><b>Director Name</p></b></td>
         <td><b>Director Genre</p></b></td>
+        <td><b>Action</p></b></td>
         <td><b>Action</p></b></td>
         <td><b>Action</p></b></td>
     </tr>
@@ -37,7 +28,9 @@
             <td><p th:text="${all.genre}"></p></td>
             <td>
                 <a th:href="@{/updateDirector/{id}(id=${all.id})}">Update</a>
-                <!--<a th:href="@{/deleteDirector/{id}(id=${director.id})}">Delete</a>-->
+            </td>
+            <td>
+                <a th:href="@{/deleteDirector/{id}(id=${all.id})}">Delete</a>
             </td>
             <td>
                 <a th:href="@{/movieForm/{id}(id=${all.id})}">Add Movie</a>
@@ -46,9 +39,8 @@
     </th:block>
 </table>
 
-
-<a href="/directorForm"><input type="submit" value="Add New Director"/></a><br/>
-<a class="btn btn-secondary" href="/listAllMovies" type = "submit">See All Movies</a><br/>
-<a class="btn btn-secondary" href="/listAllDirectors" type = "submit">See All Directors</a><br/>
+<a href="/directorForm"><input type="submit" value="Add New Director"/></a><br/><br>
+<a class="btn btn-secondary" href="/listAllMovies" type = "submit">See All Movies</a><br/><br>
+<a class="btn btn-primary" href="/" role="button">Link to the Home Page</a>
 </body>
 </html>
